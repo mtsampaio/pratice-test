@@ -1,0 +1,335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SocialNetworkModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="UserPostComments">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Comment" Type="varchar(max)" Nullable="false" />
+          <Property Name="CommentDate" Type="datetime" />
+          <Property Name="User_Id" Type="int" Nullable="false" />
+          <Property Name="UserPost_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserPostLikes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User_Id" Type="int" Nullable="false" />
+          <Property Name="UserPost_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserPosts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PostContent" Type="varchar(max)" Nullable="false" />
+          <Property Name="ContentType" Type="int" Nullable="false" />
+          <Property Name="PostDate" Type="datetime" />
+          <Property Name="User_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="12" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_UserPostComments_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserPostComments" Type="Self.UserPostComments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPostComments">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPostComments_UserPosts">
+          <End Role="UserPosts" Type="Self.UserPosts" Multiplicity="1" />
+          <End Role="UserPostComments" Type="Self.UserPostComments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserPosts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPostComments">
+              <PropertyRef Name="UserPost_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPostLikes_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserPostLikes" Type="Self.UserPostLikes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPostLikes">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPostLikes_UserPosts">
+          <End Role="UserPosts" Type="Self.UserPosts" Multiplicity="1" />
+          <End Role="UserPostLikes" Type="Self.UserPostLikes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserPosts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPostLikes">
+              <PropertyRef Name="UserPost_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPosts_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserPosts" Type="Self.UserPosts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPosts">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SocialNetworkModelStoreContainer">
+          <EntitySet Name="UserPostComments" EntityType="Self.UserPostComments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserPostLikes" EntityType="Self.UserPostLikes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserPosts" EntityType="Self.UserPosts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_UserPostComments_User" Association="Self.FK_UserPostComments_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserPostComments" EntitySet="UserPostComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPostComments_UserPosts" Association="Self.FK_UserPostComments_UserPosts">
+            <End Role="UserPosts" EntitySet="UserPosts" />
+            <End Role="UserPostComments" EntitySet="UserPostComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPostLikes_User" Association="Self.FK_UserPostLikes_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserPostLikes" EntitySet="UserPostLikes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPostLikes_UserPosts" Association="Self.FK_UserPostLikes_UserPosts">
+            <End Role="UserPosts" EntitySet="UserPosts" />
+            <End Role="UserPostLikes" EntitySet="UserPostLikes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPosts_User" Association="Self.FK_UserPosts_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserPosts" EntitySet="UserPosts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SocialNetworkModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="SocialNetworkEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="UserPostComments" EntityType="SocialNetworkModel.UserPostComment" />
+          <EntitySet Name="UserPostLikes" EntityType="SocialNetworkModel.UserPostLike" />
+          <EntitySet Name="UserPosts" EntityType="SocialNetworkModel.UserPost" />
+          <EntitySet Name="Users" EntityType="SocialNetworkModel.User" />
+          <AssociationSet Name="FK_UserPostComments_User" Association="SocialNetworkModel.FK_UserPostComments_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserPostComment" EntitySet="UserPostComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPostComments_UserPosts" Association="SocialNetworkModel.FK_UserPostComments_UserPosts">
+            <End Role="UserPost" EntitySet="UserPosts" />
+            <End Role="UserPostComment" EntitySet="UserPostComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPostLikes_User" Association="SocialNetworkModel.FK_UserPostLikes_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserPostLike" EntitySet="UserPostLikes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPostLikes_UserPosts" Association="SocialNetworkModel.FK_UserPostLikes_UserPosts">
+            <End Role="UserPost" EntitySet="UserPosts" />
+            <End Role="UserPostLike" EntitySet="UserPostLikes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPosts_User" Association="SocialNetworkModel.FK_UserPosts_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserPost" EntitySet="UserPosts" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="UserPostComment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Comment" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CommentDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="SocialNetworkModel.FK_UserPostComments_User" FromRole="UserPostComment" ToRole="User" />
+          <NavigationProperty Name="UserPost" Relationship="SocialNetworkModel.FK_UserPostComments_UserPosts" FromRole="UserPostComment" ToRole="UserPost" />
+        </EntityType>
+        <EntityType Name="UserPostLike">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="User" Relationship="SocialNetworkModel.FK_UserPostLikes_User" FromRole="UserPostLike" ToRole="User" />
+          <NavigationProperty Name="UserPost" Relationship="SocialNetworkModel.FK_UserPostLikes_UserPosts" FromRole="UserPostLike" ToRole="UserPost" />
+        </EntityType>
+        <EntityType Name="UserPost">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PostContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ContentType" Type="Int32" Nullable="false" />
+          <Property Name="PostDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="UserPostComments" Relationship="SocialNetworkModel.FK_UserPostComments_UserPosts" FromRole="UserPost" ToRole="UserPostComment" />
+          <NavigationProperty Name="UserPostLikes" Relationship="SocialNetworkModel.FK_UserPostLikes_UserPosts" FromRole="UserPost" ToRole="UserPostLike" />
+          <NavigationProperty Name="User" Relationship="SocialNetworkModel.FK_UserPosts_User" FromRole="UserPost" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="UserPostComments" Relationship="SocialNetworkModel.FK_UserPostComments_User" FromRole="User" ToRole="UserPostComment" />
+          <NavigationProperty Name="UserPostLikes" Relationship="SocialNetworkModel.FK_UserPostLikes_User" FromRole="User" ToRole="UserPostLike" />
+          <NavigationProperty Name="UserPosts" Relationship="SocialNetworkModel.FK_UserPosts_User" FromRole="User" ToRole="UserPost" />
+        </EntityType>
+        <Association Name="FK_UserPostComments_User">
+          <End Type="SocialNetworkModel.User" Role="User" Multiplicity="1" />
+          <End Type="SocialNetworkModel.UserPostComment" Role="UserPostComment" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_UserPostComments_UserPosts">
+          <End Type="SocialNetworkModel.UserPost" Role="UserPost" Multiplicity="1" />
+          <End Type="SocialNetworkModel.UserPostComment" Role="UserPostComment" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_UserPostLikes_User">
+          <End Type="SocialNetworkModel.User" Role="User" Multiplicity="1" />
+          <End Type="SocialNetworkModel.UserPostLike" Role="UserPostLike" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_UserPostLikes_UserPosts">
+          <End Type="SocialNetworkModel.UserPost" Role="UserPost" Multiplicity="1" />
+          <End Type="SocialNetworkModel.UserPostLike" Role="UserPostLike" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_UserPosts_User">
+          <End Type="SocialNetworkModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="SocialNetworkModel.UserPost" Role="UserPost" Multiplicity="*" />
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SocialNetworkModelStoreContainer" CdmEntityContainer="SocialNetworkEntities">
+          <EntitySetMapping Name="UserPostComments">
+            <EntityTypeMapping TypeName="SocialNetworkModel.UserPostComment">
+              <MappingFragment StoreEntitySet="UserPostComments">
+                <ScalarProperty Name="CommentDate" ColumnName="CommentDate" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserPostLikes">
+            <EntityTypeMapping TypeName="SocialNetworkModel.UserPostLike">
+              <MappingFragment StoreEntitySet="UserPostLikes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserPosts">
+            <EntityTypeMapping TypeName="SocialNetworkModel.UserPost">
+              <MappingFragment StoreEntitySet="UserPosts">
+                <ScalarProperty Name="PostDate" ColumnName="PostDate" />
+                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+                <ScalarProperty Name="PostContent" ColumnName="PostContent" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="SocialNetworkModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_UserPostComments_User" TypeName="SocialNetworkModel.FK_UserPostComments_User" StoreEntitySet="UserPostComments">
+            <EndProperty Name="UserPostComment">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="User">
+              <ScalarProperty Name="Id" ColumnName="User_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_UserPostComments_UserPosts" TypeName="SocialNetworkModel.FK_UserPostComments_UserPosts" StoreEntitySet="UserPostComments">
+            <EndProperty Name="UserPostComment">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="UserPost">
+              <ScalarProperty Name="Id" ColumnName="UserPost_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_UserPostLikes_User" TypeName="SocialNetworkModel.FK_UserPostLikes_User" StoreEntitySet="UserPostLikes">
+            <EndProperty Name="UserPostLike">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="User">
+              <ScalarProperty Name="Id" ColumnName="User_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_UserPostLikes_UserPosts" TypeName="SocialNetworkModel.FK_UserPostLikes_UserPosts" StoreEntitySet="UserPostLikes">
+            <EndProperty Name="UserPostLike">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="UserPost">
+              <ScalarProperty Name="Id" ColumnName="UserPost_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_UserPosts_User" TypeName="SocialNetworkModel.FK_UserPosts_User" StoreEntitySet="UserPosts">
+            <EndProperty Name="UserPost">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="User">
+              <ScalarProperty Name="Id" ColumnName="User_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
