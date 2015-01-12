@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chi.SocialNetwork", "Chi.SocialNetwork\Chi.SocialNetwork.csproj", "{99AFFA7B-7F68-425D-A7EE-6B91731FA4BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chi.SocialNetwork.Data", "Chi.SocialNetwork.Data\Chi.SocialNetwork.Data.csproj", "{A97DADDE-79F4-4EE7-9AAA-103AD1CEF912}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{99AFFA7B-7F68-425D-A7EE-6B91731FA4BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99AFFA7B-7F68-425D-A7EE-6B91731FA4BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99AFFA7B-7F68-425D-A7EE-6B91731FA4BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99AFFA7B-7F68-425D-A7EE-6B91731FA4BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A97DADDE-79F4-4EE7-9AAA-103AD1CEF912}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A97DADDE-79F4-4EE7-9AAA-103AD1CEF912}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A97DADDE-79F4-4EE7-9AAA-103AD1CEF912}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A97DADDE-79F4-4EE7-9AAA-103AD1CEF912}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
