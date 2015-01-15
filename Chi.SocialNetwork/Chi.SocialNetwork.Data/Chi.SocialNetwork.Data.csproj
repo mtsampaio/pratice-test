@@ -48,13 +48,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Metadata\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Repository.Auth.cs" />
     <Compile Include="Repository.cs" />
+    <Compile Include="Repository.User.Post.Comments.Likes.cs" />
+    <Compile Include="Repository.User.Post.Likes.cs" />
     <Compile Include="Repository.User.Posts.Comments.cs" />
     <Compile Include="Repository.User.Posts.cs" />
     <Compile Include="RepositoryException.cs" />
@@ -80,6 +84,9 @@
       <DependentUpon>SocialNetworkModel.tt</DependentUpon>
     </Compile>
     <Compile Include="UserPostComment.cs">
+      <DependentUpon>SocialNetworkModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserPostCommentLike.cs">
       <DependentUpon>SocialNetworkModel.tt</DependentUpon>
     </Compile>
     <Compile Include="UserPostLike.cs">

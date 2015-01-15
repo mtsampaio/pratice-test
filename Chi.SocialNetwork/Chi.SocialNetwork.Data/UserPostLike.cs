@@ -15,6 +15,8 @@ namespace Chi.SocialNetwork.Data
     public partial class UserPostLike
     {
         public int Id { get; set; }
+        public int User_Id { get; set; }
+        public int UserPost_Id { get; set; }
     
         public virtual User User { get; set; }
         public virtual UserPost UserPost { get; set; }

@@ -19,6 +19,7 @@ namespace Chi.SocialNetwork.Data
             this.UserPostComments = new HashSet<UserPostComment>();
             this.UserPostLikes = new HashSet<UserPostLike>();
             this.UserPosts = new HashSet<UserPost>();
+            this.UserPostCommentLikes = new HashSet<UserPostCommentLike>();
         }
     
         public int Id { get; set; }
@@ -26,9 +27,11 @@ namespace Chi.SocialNetwork.Data
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public string About { get; set; }
     
         public virtual ICollection<UserPostComment> UserPostComments { get; set; }
         public virtual ICollection<UserPostLike> UserPostLikes { get; set; }
         public virtual ICollection<UserPost> UserPosts { get; set; }
+        public virtual ICollection<UserPostCommentLike> UserPostCommentLikes { get; set; }
     }
 }

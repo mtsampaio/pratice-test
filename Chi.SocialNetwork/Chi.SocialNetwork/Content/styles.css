@@ -28,6 +28,13 @@ hr {
    margin-right:0;
 }
 
+@media (min-width: 768px) {
+    .navbar-right {
+        float: right !important;
+        margin-right: 0;
+    }
+}
+
 .wrapper:before, .wrapper:after,
 .column:before, .column:after {
     content: "";
@@ -295,4 +302,54 @@ small.text-muted {
 .media-heading {
     font-size: 14px;
     font-weight: 600;
+}
+
+/*
+ * login page
+ *---------------------------------------------------
+ */
+
+.well-blue {
+    background-color: #3B5999;
+    color: white;
+}
+
+.well.login-form {
+    padding-bottom: 0;
+}
+
+.panel-body .row .col-xs-6 {
+    margin-bottom: 10px;
+}
+
+.col-left {
+    padding-right: 5px;
+    padding-left: 0;
+}
+
+.col-right {
+    padding-left: 5px;
+    padding-right: 0;
+}
+
+/*
+ * wall
+ *---------------------------------------------------
+ */
+
+#form-comment {
+    padding-top: 13px;
+}
+
+.odd-comment {
+    background-color: black;
+}
+
+.wall-post {
+    background-color: rgb(238, 238, 238);
+    padding: 20px;
+}
+
+.wall-like {
+    color: #6d84b4;
 }

@@ -24,6 +24,7 @@ namespace Chi.SocialNetwork.Data
         public string PostContent { get; set; }
         public int ContentType { get; set; }
         public Nullable<System.DateTime> PostDate { get; set; }
+        public int User_Id { get; set; }
     
         public virtual ICollection<UserPostComment> UserPostComments { get; set; }
         public virtual ICollection<UserPostLike> UserPostLikes { get; set; }

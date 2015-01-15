@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Chi.SocialNetwork.Data
 {
@@ -59,21 +60,27 @@ namespace Chi.SocialNetwork.Data
         #region Inserts
 
         /// <summary>
-        /// Inserts a new user into the Chi Social Network database.
+        /// Inserts a new user asynchronously into the Chi Social Network database.
         /// </summary>
         /// <param name="user">The new user.</param>
         /// <returns>The user with the new Id.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when the user parameter is null.</exception>
         /// <exception cref="System.InvalidOperationException">Thrown when the user's e-mail already exists in the database.</exception>
         /// <exception cref="Chi.SocialNetwork.Data.RepositoryException">Thrown when database actions fail.</exception>
-        public User InsertUser(User user)
+        public async Task<User> InsertUserAsync(User user)
         {
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
             if (this.ValidateUserEmail(user.Id, user.Email) == false)
             {
                 throw new InvalidOperationException(Properties.Resources.DuplicatedUserEmail);
             }
 
             var insertedUser = this.entities.Users.Add(user);
-            this.SaveChanges();
+            await this.SaveChangesAsync();
             return insertedUser;
         }
 

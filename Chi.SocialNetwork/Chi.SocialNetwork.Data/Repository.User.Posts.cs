@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace Chi.SocialNetwork.Data
 {
@@ -15,19 +17,16 @@ namespace Chi.SocialNetwork.Data
             return this.entities.UserPosts.Where(p => p.User.Id == userId);
         }
 
-        public UserPost InsertUserPost(UserPost post)
+        /// <summary>
+        /// Inserts a new post asynchronously into Chi Social Network.
+        /// </summary>
+        /// <param name="post">The post to be inserted.</param>
+        /// <returns>The inserted post.</returns>
+        public async Task<UserPost> InsertUserPostAsync(UserPost post)
         {
-            throw new NotImplementedException();
-        }
-
-        public UserPost UpdateUserPost(int userId, UserPost post)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteUserPost(int userPostId)
-        {
-            throw new NotImplementedException();
+            post = this.entities.UserPosts.Add(post);
+            await this.SaveChangesAsync();
+            return post;
         }
     }
 }

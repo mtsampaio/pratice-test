@@ -29,5 +29,6 @@ namespace Chi.SocialNetwork.Data
         public virtual DbSet<UserPostLike> UserPostLikes { get; set; }
         public virtual DbSet<UserPost> UserPosts { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserPostCommentLike> UserPostCommentLikes { get; set; }
     }
 }

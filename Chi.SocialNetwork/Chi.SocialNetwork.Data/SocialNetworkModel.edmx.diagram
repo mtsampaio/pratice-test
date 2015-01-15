@@ -5,15 +5,18 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="42cbde9404374e05a23780813d6771b5" Name="Diagram1">
-        <EntityTypeShape EntityType="SocialNetworkModel.UserPostComment" Width="1.5" PointX="5.25" PointY="5.25" />
-        <EntityTypeShape EntityType="SocialNetworkModel.UserPostLike" Width="1.5" PointX="5.25" PointY="8.375" />
-        <EntityTypeShape EntityType="SocialNetworkModel.UserPost" Width="1.5" PointX="3" PointY="6.5" />
-        <EntityTypeShape EntityType="SocialNetworkModel.User" Width="1.5" PointX="0.75" PointY="3.625" />
+        <EntityTypeShape EntityType="SocialNetworkModel.UserPostComment" Width="1.5" PointX="5.25" PointY="5.875" />
+        <EntityTypeShape EntityType="SocialNetworkModel.UserPostLike" Width="1.5" PointX="5.25" PointY="9.125" />
+        <EntityTypeShape EntityType="SocialNetworkModel.UserPost" Width="1.5" PointX="3" PointY="7.625" />
+        <EntityTypeShape EntityType="SocialNetworkModel.User" Width="1.5" PointX="0.75" PointY="4.125" />
         <AssociationConnector Association="SocialNetworkModel.FK_UserPostComments_User" />
         <AssociationConnector Association="SocialNetworkModel.FK_UserPostComments_UserPosts" />
         <AssociationConnector Association="SocialNetworkModel.FK_UserPostLikes_User" />
         <AssociationConnector Association="SocialNetworkModel.FK_UserPostLikes_UserPosts" />
         <AssociationConnector Association="SocialNetworkModel.FK_UserPosts_User" />
+        <EntityTypeShape EntityType="SocialNetworkModel.UserPostCommentLike" Width="1.5" PointX="7.5" PointY="5.25" />
+        <AssociationConnector Association="SocialNetworkModel.FK_UserPostCommentLikes_User" />
+        <AssociationConnector Association="SocialNetworkModel.FK_UserPostCommentLikes_UserPostComments" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

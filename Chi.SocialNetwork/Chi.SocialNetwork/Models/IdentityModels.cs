@@ -29,5 +29,13 @@ namespace Chi.SocialNetwork.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<Chi.SocialNetwork.Data.UserPost> UserPosts { get; set; }
+
+        public System.Data.Entity.DbSet<Chi.SocialNetwork.Data.UserPostComment> UserPostComments { get; set; }
+
+        public System.Data.Entity.DbSet<Chi.SocialNetwork.Data.UserPostLike> UserPostLikes { get; set; }
+
+        public System.Data.Entity.DbSet<Chi.SocialNetwork.Data.UserPostCommentLike> UserPostCommentLikes { get; set; }
     }
 }
