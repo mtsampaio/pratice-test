@@ -5,13 +5,11 @@ using System.Web;
 
 namespace Chi.SocialNetwork
 {
-    public class PostCommentDTO
+    public class PostFileDTO
     {
         public int Id { get; set; }
         public int PostId { get; set; }
-        public string Comment { get; set; }
-        public bool Liked { get; set; }
-        public int LikeCount { get; set; }
-        public UserDTO User { get; set; }
+        public string FileName { get; set; }
+        public string Type { get; set; }
     }
 }

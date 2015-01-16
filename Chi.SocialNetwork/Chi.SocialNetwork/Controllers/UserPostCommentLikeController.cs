@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using Chi.SocialNetwork.Data;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Linq;
 using System.Web.Http.Description;
-using Chi.SocialNetwork.Data;
-using Chi.SocialNetwork.Models;
-using System.Security.Claims;
 
 namespace Chi.SocialNetwork.Controllers
 {
@@ -44,19 +36,22 @@ namespace Chi.SocialNetwork.Controllers
 
         // DELETE: api/UserPostCommentLike/5
         [ResponseType(typeof(UserPostCommentLike))]
-        public async Task<IHttpActionResult> DeleteUserPostCommentLike(int id)
+        public IHttpActionResult DeleteUserPostCommentLike(int id)
         {
-            repository.DeleteUserPostCommentLikeAsync(id);
-            return Ok();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            var user = CurrentUserHelper.GetCurrentUser(this.User.Identity as ClaimsIdentity);
+            if (user == null)
             {
-                repository.Dispose();
+                return BadRequest(Properties.Resources.InvalidUserIdentity);
             }
-            base.Dispose(disposing);
+
+            var like = this.repository.GetUserPostCommentLikes(id).FirstOrDefault(p => p.User_Id == user.Id);
+
+            if (like != null)
+            {
+                repository.DeleteUserPostCommentLikeAsync(like.Id);
+            }
+
+            return Ok();
         }
     }
 }

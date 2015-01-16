@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Web.Mvc;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
+using System.IO;
 
 namespace Chi.SocialNetwork.Controllers
 {
@@ -50,6 +51,18 @@ namespace Chi.SocialNetwork.Controllers
             ViewBag.IsOwner = userId == loggedUser.Id;
 
             return View();
+        }
+
+        public ActionResult PostFile(int id)
+        {
+            var file = this.rep.GetUserPostFile(id);
+            if (file != null)
+            {
+                var dir = Server.MapPath("/App_Data");
+                var path = Path.Combine(dir, file.FileName);
+                return base.File(path, "image/jpeg");
+            }
+                return base.File("", file.Type);
         }
 
         protected override void Dispose(bool disposing)

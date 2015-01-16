@@ -57,9 +57,10 @@
     </Compile>
     <Compile Include="Repository.Auth.cs" />
     <Compile Include="Repository.cs" />
-    <Compile Include="Repository.User.Post.Comments.Likes.cs" />
+    <Compile Include="Repository.User.Post.Comment.Likes.cs" />
+    <Compile Include="Repository.User.Post.Files.cs" />
     <Compile Include="Repository.User.Post.Likes.cs" />
-    <Compile Include="Repository.User.Posts.Comments.cs" />
+    <Compile Include="Repository.User.Post.Comments.cs" />
     <Compile Include="Repository.User.Posts.cs" />
     <Compile Include="RepositoryException.cs" />
     <Compile Include="SocialNetworkModel.Context.cs">
@@ -87,6 +88,9 @@
       <DependentUpon>SocialNetworkModel.tt</DependentUpon>
     </Compile>
     <Compile Include="UserPostCommentLike.cs">
+      <DependentUpon>SocialNetworkModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserPostFile.cs">
       <DependentUpon>SocialNetworkModel.tt</DependentUpon>
     </Compile>
     <Compile Include="UserPostLike.cs">

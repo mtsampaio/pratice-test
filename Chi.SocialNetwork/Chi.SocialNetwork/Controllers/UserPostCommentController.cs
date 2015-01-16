@@ -49,14 +49,5 @@ namespace Chi.SocialNetwork.Controllers
 
             return CreatedAtRoute("DefaultApi", new { id = userPostComment.Id }, dto);
         }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                repository.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }

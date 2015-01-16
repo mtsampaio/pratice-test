@@ -2,11 +2,37 @@
     var
         self = this,
         userPostUri = '/api/UserPosts',
-        userCommentUri = '/api/UserPostComment'
+        userCommentUri = '/api/UserPostComment',
+
+        dropzone
     ;
 
+    if ($('#form-comment').length) {
+        dropzone = new Dropzone($('#form-comment')[0], {
+            url: "/api/FileUpload",
+            acceptedFiles: 'image/*, video/*',
+            thumbnailWidth: 80,
+            thumbnailHeight: 80,
+            parallelUploads: 20,
+            previewsContainer: "#previews",
+            addRemoveLinks: true,
+            maxFilesize: 20,
+            clickable: ".fileinput-button",
+            autoProcessQueue: false,
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("user")
+            },
+            error: function (e, text, xhr) {
+                if (xhr) {
+                    text = xhr.responseText;
+                }
+            }
+        });
+    }
+
+    self.busy = ko.observable(true);
+
     self.hobbie = ko.observable('');
-    self.media = ko.observable('');
 
     self.userPosts = ko.observableArray();
     self.getPosts = function () {
@@ -34,6 +60,8 @@
            self = this
         ;
 
+        self.busy(true);
+
         ajaxHelper(userPostUri, {
             data: JSON.stringify({
                 Id: 0,
@@ -41,8 +69,70 @@
                 ContentType: 1
             }),
             success: function (obj) {
-                self.userPosts.splice(0, 0, resultToUserPost(obj));
-                self.hobbie('');
+                var
+                    addedFiles = dropzone.getFilesWithStatus(Dropzone.QUEUED),
+                    post = resultToUserPost(obj)
+                ;
+
+                if (addedFiles.length > 0) {
+                    var
+                        count = 0,
+                        files = []
+                    ;
+
+                    dropzone.on('success', function (result) {
+
+                        var
+                            file = JSON.parse(result.xhr.response)[0]
+                        ;
+
+                        if (file) {
+                            ajaxHelper('/api/UserPostFile', {
+                                data: JSON.stringify({
+                                    Id: 0,
+                                    UserPostId: post.id,
+                                    FileName: file.FileName,
+                                    Type: file.Type
+                                }),
+                                success: function (obj) {
+                                    var
+                                        file = new File()
+                                    ;
+
+                                    file.id = obj.Id;
+                                    file.file = obj.FileName;
+                                    file.type = obj.Type;
+
+                                    files.push(file);
+                                },
+                                complete: function () {
+                                    count++;
+                                }
+                            })
+                        }
+                    });
+
+                    dropzone.processQueue();
+
+                    var interval = setInterval(function () {
+                        if (count == dropzone.getAcceptedFiles().length) {
+                            clearInterval(interval);
+
+                            dropzone.removeAllFiles(true);
+                            self.hobbie('');
+
+                            self.userPosts.splice(0, 0, post);
+                            post.medias(files);
+                        }
+                    }, 100);
+                }
+                else {
+                    self.userPosts.splice(0, 0, post);
+                    self.hobbie('');
+                }
+            },
+            complete: function () {
+                self.busy(false);
             }
         });
     }
@@ -73,7 +163,7 @@
 
         self.id = 0;
         self.content = '';
-        self.type = 1;
+        self.medias = ko.observableArray();
 
         self.userComment = ko.observable('');
         self.comments = ko.observableArray();
@@ -161,8 +251,11 @@
             });
         };
         self.unlike = function () {
-            ajaxHelper(userPostUri, {
+            ajaxHelper(serviceUri + "/" + self.keyValue, {
                 type: "DELETE",
+                data: JSON.stringify({
+                    id: self.keyValue
+                }),
                 success: function (obj) {
                     self.likeId = 0;
                     self.liked(false);
@@ -172,6 +265,16 @@
         }
     }
 
+    function File() {
+        var
+           self = this
+        ;
+
+        self.id = 0;
+        self.file = '';
+        self.type = '';
+    }
+
     function resultToUserPost(result) {
         var
             post = new Post()
@@ -179,9 +282,24 @@
 
         post.id = result.Id;
         post.content = result.Post.replace(/\n/g, "<br />");
-        post.type = result.Type;
         post.like.keyValue = post.id;
         post.like.count(result.LikeCount);
+        post.like.liked(result.Liked);
+
+        if (result.Files) {
+            for (var i = 0; i < result.Files.length; i++) {
+                var
+                    media = result.Files[i],
+                    file = new File()
+                ;
+
+                file.id = media.Id;
+                file.file = media.FileName;
+                file.type = media.Type;
+
+                post.medias.push(file);
+            }
+        }
 
         if (result.Comments) {
             for (var i = 0; i < result.Comments.length; i++) {
@@ -211,6 +329,7 @@
         comment.user = user;
         comment.like.keyValue = result.Id;
         comment.like.count(result.LikeCount);
+        comment.like.liked(result.Liked);
 
         return comment;
     }

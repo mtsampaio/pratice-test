@@ -1,9 +1,14 @@
 ﻿using Chi.SocialNetwork.Data;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 
@@ -19,13 +24,27 @@ namespace Chi.SocialNetwork.Controllers
         {
             var posts = new List<UserPostDTO>();
 
+            var user = CurrentUserHelper.GetCurrentUser(this.User.Identity as ClaimsIdentity);
+
+            if (user == null)
+            {
+                return null;
+            }
+
             foreach (var userPost in repository.GetUserPosts(id).OrderByDescending(p => p.PostDate))
             {
                 var post = new UserPostDTO
                 {
                     Id = userPost.Id,
                     Post = userPost.PostContent,
-                    Type = userPost.ContentType,
+                    Files = this.repository.GetUserPostFiles(userPost.Id).Select(p => new PostFileDTO
+                    {
+                        Id = p.Id,
+                        PostId = userPost.Id,
+                        FileName = p.FileName,
+                        Type = p.Type
+                    }),
+                    Liked = this.repository.GetUserPostLikes(userPost.Id).Any(p => p.User_Id == user.Id),
                     LikeCount = this.repository.GetUserPostLikes(userPost.Id).Count()
                 };
 
@@ -36,6 +55,7 @@ namespace Chi.SocialNetwork.Controllers
                     {
                         Id = userComment.Id,
                         Comment = userComment.Comment,
+                        Liked = this.repository.GetUserPostCommentLikes(userComment.Id).Any(p => p.User_Id == user.Id),
                         LikeCount = this.repository.GetUserPostCommentLikes(userComment.Id).Count(),
                         User = new UserDTO
                         {
@@ -79,18 +99,10 @@ namespace Chi.SocialNetwork.Controllers
                 {
                     Id = userPost.Id,
                     Post = userPost.PostContent,
-                    Type = userPost.ContentType,
+                    Files = null,
                     LikeCount = this.repository.GetUserPostLikes(userPost.Id).Count()
                 });
         }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                this.repository.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }
+

@@ -23,6 +23,15 @@
           <Property Name="User_Id" Type="int" Nullable="false" />
           <Property Name="UserPost_Id" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="UserPostFiles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserPostId" Type="int" Nullable="false" />
+          <Property Name="FileName" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
         <EntityType Name="UserPostLikes">
           <Key>
             <PropertyRef Name="Id" />
@@ -37,8 +46,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PostContent" Type="varchar(max)" Nullable="false" />
-          <Property Name="ContentType" Type="int" Nullable="false" />
-          <Property Name="PostDate" Type="datetime" />
+          <Property Name="PostDate" Type="datetime" Nullable="false" />
           <Property Name="User_Id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
@@ -100,6 +108,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserPostFiles_UserPosts">
+          <End Role="UserPosts" Type="Self.UserPosts" Multiplicity="1" />
+          <End Role="UserPostFiles" Type="Self.UserPostFiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserPosts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPostFiles">
+              <PropertyRef Name="UserPostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserPostLikes_User">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="UserPostLikes" Type="Self.UserPostLikes" Multiplicity="*" />
@@ -141,6 +161,7 @@
         <EntityContainer Name="SocialNetworkModelStoreContainer">
           <EntitySet Name="UserPostCommentLikes" EntityType="Self.UserPostCommentLikes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserPostComments" EntityType="Self.UserPostComments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserPostFiles" EntityType="Self.UserPostFiles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserPostLikes" EntityType="Self.UserPostLikes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserPosts" EntityType="Self.UserPosts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
@@ -159,6 +180,10 @@
           <AssociationSet Name="FK_UserPostComments_UserPosts" Association="Self.FK_UserPostComments_UserPosts">
             <End Role="UserPosts" EntitySet="UserPosts" />
             <End Role="UserPostComments" EntitySet="UserPostComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPostFiles_UserPosts" Association="Self.FK_UserPostFiles_UserPosts">
+            <End Role="UserPosts" EntitySet="UserPosts" />
+            <End Role="UserPostFiles" EntitySet="UserPostFiles" />
           </AssociationSet>
           <AssociationSet Name="FK_UserPostLikes_User" Association="Self.FK_UserPostLikes_User">
             <End Role="Users" EntitySet="Users" />
@@ -211,6 +236,11 @@
             <End Role="UserPostComment" EntitySet="UserPostComments" />
             <End Role="UserPostCommentLike" EntitySet="UserPostCommentLikes" />
           </AssociationSet>
+          <EntitySet Name="UserPostFiles" EntityType="SocialNetworkModel.UserPostFile" />
+          <AssociationSet Name="FK_UserPostFiles_UserPosts" Association="SocialNetworkModel.FK_UserPostFiles_UserPosts">
+            <End Role="UserPost" EntitySet="UserPosts" />
+            <End Role="UserPostFile" EntitySet="UserPostFiles" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="UserPostComment">
           <Key>
@@ -241,12 +271,12 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PostContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="ContentType" Type="Int32" Nullable="false" />
-          <Property Name="PostDate" Type="DateTime" Precision="3" />
           <Property Name="User_Id" Type="Int32" Nullable="false" />
           <NavigationProperty Name="UserPostComments" Relationship="SocialNetworkModel.FK_UserPostComments_UserPosts" FromRole="UserPost" ToRole="UserPostComment" />
           <NavigationProperty Name="UserPostLikes" Relationship="SocialNetworkModel.FK_UserPostLikes_UserPosts" FromRole="UserPost" ToRole="UserPostLike" />
           <NavigationProperty Name="User" Relationship="SocialNetworkModel.FK_UserPosts_User" FromRole="UserPost" ToRole="User" />
+          <Property Name="PostDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="UserPostFiles" Relationship="SocialNetworkModel.FK_UserPostFiles_UserPosts" FromRole="UserPost" ToRole="UserPostFile" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -359,6 +389,28 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="UserPostFile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserPostId" Type="Int32" Nullable="false" />
+          <Property Name="FileName" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="UserPost" Relationship="SocialNetworkModel.FK_UserPostFiles_UserPosts" FromRole="UserPostFile" ToRole="UserPost" />
+        </EntityType>
+        <Association Name="FK_UserPostFiles_UserPosts">
+          <End Type="SocialNetworkModel.UserPost" Role="UserPost" Multiplicity="1" />
+          <End Type="SocialNetworkModel.UserPostFile" Role="UserPostFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserPost">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPostFile">
+              <PropertyRef Name="UserPostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -388,9 +440,8 @@
           <EntitySetMapping Name="UserPosts">
             <EntityTypeMapping TypeName="SocialNetworkModel.UserPost">
               <MappingFragment StoreEntitySet="UserPosts">
-                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
                 <ScalarProperty Name="PostDate" ColumnName="PostDate" />
-                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
                 <ScalarProperty Name="PostContent" ColumnName="PostContent" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -413,6 +464,16 @@
               <MappingFragment StoreEntitySet="UserPostCommentLikes">
                 <ScalarProperty Name="UserPostComment_Id" ColumnName="UserPostComment_Id" />
                 <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserPostFiles">
+            <EntityTypeMapping TypeName="SocialNetworkModel.UserPostFile">
+              <MappingFragment StoreEntitySet="UserPostFiles">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="UserPostId" ColumnName="UserPostId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

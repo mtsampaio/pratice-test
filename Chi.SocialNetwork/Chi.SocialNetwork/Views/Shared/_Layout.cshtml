@@ -6,6 +6,8 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/kendo/css")
+    @Styles.Render("~/Content/dropzonescss")
+    @Styles.Render("~/Content/site")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/kendo")
@@ -16,6 +18,7 @@
     </div>
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/knockoutjs")
+    @Scripts.Render("~/bundles/dropzonescripts")
     @RenderSection("scripts", required: false)
 </body>
 </html>

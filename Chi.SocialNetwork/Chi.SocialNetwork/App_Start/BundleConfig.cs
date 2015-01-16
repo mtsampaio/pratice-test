@@ -30,12 +30,21 @@ namespace Chi.SocialNetwork
                       "~/Scripts/validator.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.min.css",
+                      "~/Content/bootstrap.min.css"));
+
+            bundles.Add(new StyleBundle("~/Content/site").Include(
                       "~/Content/styles.css"));
 
             bundles.Add(new StyleBundle("~/Content/kendo/css").Include(
                 "~/Content/kendo/kendo.common-bootstrap.min.css",
                 "~/Content/kendo/kendo.bootstrap.min.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/dropzonescripts").Include(
+                     "~/Scripts/dropzone/dropzone.js"));
+
+            bundles.Add(new StyleBundle("~/Content/dropzonescss").Include(
+                     "~/Scripts/dropzone/css/basic.css",
+                     "~/Scripts/dropzone/css/dropzone.css"));
         }
     }
 }

@@ -2,7 +2,9 @@
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System.Linq;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web.Http.ModelBinding;
 
 namespace Chi.SocialNetwork.Controllers
 {
@@ -11,24 +13,16 @@ namespace Chi.SocialNetwork.Controllers
         private Repository repository = new Repository();
 
         // GET: api/User
-        public IQueryable<User> GetUsers()
+        public DataSourceResult GetUsers([ModelBinder(typeof(WebApiDataSourceRequestModelBinder))] DataSourceRequest request)
         {
-            return repository.GetUsers();
-        }
-
-        // GET: api/User
-        public DataSourceResult GetUsersKendo([System.Web.Http.ModelBinding.ModelBinder(typeof(WebApiDataSourceRequestModelBinder))]DataSourceRequest request)
-        {
-            return repository.GetUsers().ToDataSourceResult(request);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                repository.Dispose();
-            }
-            base.Dispose(disposing);
+            return repository.GetUsers()
+                .Select(p => new UserDTO
+                {
+                    Id = p.Id,
+                    Name = p.Name + " " + p.LastName,
+                    Portrait = ""
+                })
+                .ToDataSourceResult(request);
         }
     }
 }

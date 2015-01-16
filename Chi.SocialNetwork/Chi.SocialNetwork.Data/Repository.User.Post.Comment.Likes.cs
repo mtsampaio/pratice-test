@@ -28,13 +28,13 @@ namespace Chi.SocialNetwork.Data
         /// Deletes a post like asynchronously from Chi Social Network database.
         /// </summary>
         /// <param name="post">The post the user disliked</param>
-        public async void DeleteUserPostCommentLikeAsync(int userPostCommentLikeId)
+        public void DeleteUserPostCommentLikeAsync(int userPostCommentLikeId)
         {
-            var postLike = await this.entities.UserPostCommentLikes.FirstOrDefaultAsync(p => p.Id == userPostCommentLikeId);
+            var postLike = this.entities.UserPostCommentLikes.FirstOrDefault(p => p.Id == userPostCommentLikeId);
             if (postLike != null)
             {
                 this.entities.UserPostCommentLikes.Remove(postLike);
-                await this.SaveChangesAsync();
+                this.SaveChanges();
             }
         }
     }

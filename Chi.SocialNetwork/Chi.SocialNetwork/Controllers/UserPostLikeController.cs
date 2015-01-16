@@ -1,4 +1,5 @@
 ﻿using Chi.SocialNetwork.Data;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -36,17 +37,20 @@ namespace Chi.SocialNetwork.Controllers
         // DELETE: api/UserPostLike/5
         public IHttpActionResult DeleteUserPostLike(int id)
         {
-            repository.DeleteUserPostLikeAsync(id);
-            return Ok();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            var user = CurrentUserHelper.GetCurrentUser(this.User.Identity as ClaimsIdentity);
+            if (user == null)
             {
-                repository.Dispose();
+                return BadRequest(Properties.Resources.InvalidUserIdentity);
             }
-            base.Dispose(disposing);
+
+            var like = this.repository.GetUserPostLikes(id).FirstOrDefault(p => p.User_Id == user.Id);
+
+            if (like != null)
+            {
+                repository.DeleteUserPostLikeAsync(like.Id);
+            }
+
+            return Ok();
         }
     }
 }

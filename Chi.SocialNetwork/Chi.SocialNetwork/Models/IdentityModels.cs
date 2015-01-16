@@ -37,5 +37,7 @@ namespace Chi.SocialNetwork.Models
         public System.Data.Entity.DbSet<Chi.SocialNetwork.Data.UserPostLike> UserPostLikes { get; set; }
 
         public System.Data.Entity.DbSet<Chi.SocialNetwork.Data.UserPostCommentLike> UserPostCommentLikes { get; set; }
+
+        public System.Data.Entity.DbSet<Chi.SocialNetwork.Data.UserPostFile> UserPostFiles { get; set; }
     }
 }

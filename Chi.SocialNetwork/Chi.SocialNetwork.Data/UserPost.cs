@@ -18,16 +18,17 @@ namespace Chi.SocialNetwork.Data
         {
             this.UserPostComments = new HashSet<UserPostComment>();
             this.UserPostLikes = new HashSet<UserPostLike>();
+            this.UserPostFiles = new HashSet<UserPostFile>();
         }
     
         public int Id { get; set; }
         public string PostContent { get; set; }
-        public int ContentType { get; set; }
-        public Nullable<System.DateTime> PostDate { get; set; }
         public int User_Id { get; set; }
+        public System.DateTime PostDate { get; set; }
     
         public virtual ICollection<UserPostComment> UserPostComments { get; set; }
         public virtual ICollection<UserPostLike> UserPostLikes { get; set; }
         public virtual User User { get; set; }
+        public virtual ICollection<UserPostFile> UserPostFiles { get; set; }
     }
 }

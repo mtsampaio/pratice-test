@@ -348,8 +348,16 @@ small.text-muted {
 .wall-post {
     background-color: rgb(238, 238, 238);
     padding: 20px;
+    margin-bottom: 15px;
 }
 
 .wall-like {
     color: #6d84b4;
+}
+
+.dropzone {
+    min-height: 0px;
+    border: 0px;
+    background-color: transparent;
+    padding: 0px;
 }
