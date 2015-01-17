@@ -1,0 +1,109 @@
+﻿<div id="login-screen">
+    <div class="row well well-blue">
+        <div class="jumbotron">
+            <h1>Hello and welcome to CHI Social Network!</h1>
+            <p>We hope you enjoy your stay and share your hobbies with your friends. Don't forget to check their hobbies as well. :D</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-4 col-lg-5">
+            <div class="well login-form">
+                <div class="panel-heading"><h3 class="panel-title">Log in</h3></div>
+                <hr />
+                <div class="panel-body">
+                    <form id="login-control" data-toggle="validator" data-bind="submit: login">
+                        <div class="form-group">
+                            <div class="input-group" data-bind="css: { 'has-error': userLogin.hasErrors }">
+                                <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
+                                <input type="email" id="login-user" class="form-control" placeholder="E-mail" aria-describedby="basic-addon1" required data-bind="value: userLogin.value">
+                            </div>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group" data-bind="css: { 'has-error': userPassword.hasErrors }">
+                                <span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
+                                <input type="password" id="login-pwd" class="form-control" placeholder="Password" aria-describedby="basic-addon2" required data-bind="value: userPassword.value">
+                            </div>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="alert alert-danger well-sm pull-left" role="alert" data-bind="visible: loginHasErrors">
+                                <span data-bind="text: loginErrorMessage"></span>
+                            </div>
+                            <button id="btn-login" class="btn btn-default pull-right" data-bind="enable: busy() == false">Log in</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4 col-lg-2">
+            <h2 class="text-center">OR</h2>
+        </div>
+        <div class="col-sm-12 col-md-4 col-lg-5">
+            <div class="well login-form">
+                <div class="panel-heading"><h3 class="panel-title">Sign up</h3></div>
+                <hr />
+                <div class="panel-body">
+                    <form id="signup-control" data-toggle="validator" data-bind="submit: signup">
+                        <div class="col-left col-xs-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="First Name" required data-bind="value: userNameSignup.value" />
+                                <span class="help-block with-errors"></span>
+                            </div>
+                        </div>
+                        <div class="col-right col-xs-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Last Name" required data-bind="value: userLastNameSignup.value" />
+                                <span class="help-block with-errors"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="signup-email" class="form-control" placeholder="E-mail" required data-bind="value: userEmailSignup.value" />
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Confirm your E-mail" data-match="#signup-email" data-match-error="E-mails don't match" required />
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-group">
+                            <input id="signup-pwd" type="password" class="form-control" placeholder="Password (6 characters minimum)" data-minlength="6" required data-bind="value: userPassordSignup.value" />
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Confirm password" data-match="#signup-pwd" data-match-error="Passwords don't match" data-minlength="6" required />
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" placeholder="Tell us a little bit about you..." rows="3" data-bind="value: userAboutSignup.value" required></textarea>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="alert alert-danger well-sm pull-left" role="alert" data-bind="visible: signupHasErrors">
+                                <span data-bind="text: signupErrorMessage"></span>
+                            </div>
+                            <button id="btn-login" class="btn btn-default pull-right" data-bind="enable: busy() == false">Sign up</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/Scripts/ViewModels/LoginViewModel.js" type="text/javascript"></script>
+    <script>
+        ko.applyBindings(new LoginViewModel(), $('#login-screen')[0]);
+
+        $('#login-control .form-control').focus(function () {
+            $('#signup-control').validator('destroy');
+            $('#login-control').validator();
+        });
+
+        $('#signup-control .form-control').focus(function () {
+            $('#login-control').validator('destroy');
+            $('#signup-control').validator();
+        });
+
+    </script>
+}

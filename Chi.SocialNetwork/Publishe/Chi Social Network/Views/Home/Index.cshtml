@@ -1,0 +1,214 @@
+﻿<div id="wall-page">
+    <div class="wrapper">
+        <div class="box">
+            <div class="row row-offcanvas row-offcanvas-left">
+                <!-- main right col -->
+                <div class="column col-sm-12 col-xs-12" id="main">
+                    <!-- top nav -->
+                    <div class="navbar navbar-blue navbar-static-top">
+                        <div class="navbar-header">
+                            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="sr-only">Toggle</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a href="/" class="navbar-brand logo">c</a>
+                        </div>
+                        <nav class="collapse navbar-collapse" role="navigation">
+                            <ul class="nav navbar-nav">
+                                <li>
+                                    <a href="@Url.Action("Index", new { id = new Nullable<int>() })"><i class="glyphicon glyphicon-home"></i> Wall</a>
+                                </li>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> @ViewBag.LoggedUser.Name</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="">Profile</a></li>
+                                        <li><a href="#" data-bind="click: logout">Logout</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <!-- /top nav -->
+
+                    <div class="padding">
+                        <div class="full col-sm-9">
+
+                            <!-- content -->
+                            <div class="row">
+
+                                <!-- main col left -->
+                                <div class="col-sm-5">
+
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4>@ViewBag.FullName</h4>
+                                            @{
+                                                if (ViewBag.IsOwner)
+                                                {
+                                                    <a href="#" class="small">Edit profile</a>
+                                                }
+                                            }
+                                        </div>
+                                        <div class="panel-body">
+                                            <p class="lead">About</p>
+                                            <p>@ViewBag.About</p>
+                                        </div>
+                                    </div>
+
+                                    @{
+                                        if (ViewBag.IsOwner)
+                                        {
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4>List of friends</h4>
+                                                    <span class="small">Click on the name of a friend to see his wall.</span>
+                                                </div>
+                                                <div class="panel-body">
+                                                    @(Html.Kendo().Grid<Chi.SocialNetwork.UserDTO>()
+                                                        .Name("wall-friends-grid")
+                                                        .Columns(columns =>
+                                                        {
+                                                            columns.Bound(c => c.Portrait);
+                                                            columns.Bound(c => c.Name).ClientTemplate("<a href='/Home/Index/#:Id#'>#:Name#</a>");
+                                                        })
+                                                        .Sortable()
+                                                        .Pageable()
+                                                        .Filterable()
+                                                        .DataSource(dataSource => dataSource
+                                                            .WebApi()
+                                                            .Model(model =>
+                                                            {
+                                                                model.Id(p => p.Id);
+                                                            })
+                                                            .Read(read => read.Url("/api/User").Type(HttpVerbs.Get))
+                                                        )
+                                                    )
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+
+                                </div>
+
+                                <!-- main col right -->
+                                <div class="col-sm-7">
+                                    @{
+                                        if (ViewBag.IsOwner)
+                                        {
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <form id="form-comment" role="form" data-bind="submit: post">
+                                                        <div class="form-group">
+                                                            <textarea class="form-control" rows="3" name="postcontent" placeholder="Share your hobbies with your friends!" data-bind="value: hobbie" required></textarea>
+                                                            <span class="help-block with-errors"></span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <span class="btn btn-default fileinput-button dz-clickable"><i class=" glyphicon glyphicon-upload" style="font-size: 16px;"></i></span>
+                                                            <div class="dropzone files" id="previews"></div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button type="submit" class="btn btn-default pull-right">Post</button>
+                                                        </div>
+                                                        <input type="file" multiple="multiple" class="dz-hidden-input" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;">
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+
+                                    <div data-bind="template: { name: 'user-post', foreach: userPosts }"></div>
+
+                                </div>
+                            </div><!--/row-->
+
+                        </div><!-- /col-9 -->
+                    </div><!-- /padding -->
+                </div>
+                <!-- /main -->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/Scripts/ViewModels/WallViewModel.js" type="text/javascript"></script>
+    <script>
+        Dropzone.options.previews = false
+
+        ko.applyBindings(new WallViewModel(@ViewBag.UserId), $('#wall-page')[0]);
+
+        $('#post-tabs').tabs({
+            active: 0
+        });
+
+        $('#post-tabs .ui-tabs-anchor').click(function () {
+            $(this).parents('ul.nav-tabs').find('li').removeClass('active');
+            $(this).parent().addClass('active');
+        });
+    </script>
+
+    <!-- KO templates -->
+    <!-- Post template -->
+    <script type="text/html" id="user-post">
+        <div class="well">
+            <div class="panel-body">
+                <div class="wall-post">
+                    <p data-bind="html: content"></p>
+                    <div style="margin-bottom: 10px;" data-bind="foreach: medias">
+                        <!-- ko if: type.split('/')[0] === 'image' -->
+                        <img style="padding: 5px" data-bind="attr: { src: '/Home/PostFile/' + id }" width="100" height="100" />
+                        <!-- /ko -->
+                        <!-- ko if: type.split('/')[0] === 'video' -->
+                        <video width="320" height="240" controls>
+                            <source data-bind="attr: { src: '/Home/PostFile/' + id, type: type }">
+                            Your browser does not support the video tag.
+                        </video>
+                        <!-- /ko -->
+                    </div>
+                </div>
+                <div data-bind="template: { name: 'wall-like', data: $data }"></div>
+                <hr data-bind="visible: hasComments">
+                <div data-bind="template: { name: 'post-comment', foreach: comments }"></div>
+                <hr>
+                <form data-bind="submit: comment">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Add a comment.." data-bind="value: userComment" required />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </script>
+
+    <!-- Comment template -->
+    <script type="text/html" id="post-comment">
+        <div class="media" data-bind="css: { 'odd-comment': $index % 2 == 0}">
+            <a class="media-left" href="#">
+                <img data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGRlZnMvPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjE0LjUiIHk9IjMyIiBzdHlsZT0iZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQ7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9nPjwvc3ZnPg==" data-holder-rendered="true" style="width: 48px; height: 48px;">
+            </a>
+            <div class="media-body">
+                <b><a data-bind="text: user.name, attr: { href: '/Home/Index/' + $data.user.id }"></a></b> <span data-bind="text: content"></span>
+                <div data-bind="template: { name: 'wall-like', data: $data }"></div>
+            </div>
+        </div>
+    </script>
+
+    <!-- Like Template -->
+    <script type="text/html" id="wall-like">
+        <p class="small wall-like" data-bind="with: like">
+
+            <!-- ko if: liked() == true -->
+            <a href="#" data-bind="click: unlike">Unlike</a>
+            <!-- /ko -->
+            <!-- ko if: liked() == false -->
+            <a href="#" data-bind="click: like">Like</a>
+            <!-- /ko -->
+
+            <span data-bind="visible: showLike"> - <span data-bind="text: count"></span> likes</span>
+        </p>
+    </script>
+}

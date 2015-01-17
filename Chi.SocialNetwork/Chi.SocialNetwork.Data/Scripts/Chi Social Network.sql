@@ -1,189 +1,202 @@
-﻿-- --------------------------------------------------
--- Dropping existing FOREIGN KEY constraints
--- --------------------------------------------------
-
-IF OBJECT_ID(N'[dbo].[FK_UserPostComments_User]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UserPostComments] DROP CONSTRAINT [FK_UserPostComments_User];
-GO
-IF OBJECT_ID(N'[dbo].[FK_UserPostComments_UserPosts]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UserPostComments] DROP CONSTRAINT [FK_UserPostComments_UserPosts];
-GO
-IF OBJECT_ID(N'[dbo].[FK_UserPostLikes_User]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UserPostLikes] DROP CONSTRAINT [FK_UserPostLikes_User];
-GO
-IF OBJECT_ID(N'[dbo].[FK_UserPostLikes_UserPosts]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UserPostLikes] DROP CONSTRAINT [FK_UserPostLikes_UserPosts];
-GO
-IF OBJECT_ID(N'[dbo].[FK_UserPosts_User]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UserPosts] DROP CONSTRAINT [FK_UserPosts_User];
+﻿/****** Object:  Table [dbo].[Users]    Script Date: 16/01/2015 22:49:15 ******/
+SET ANSI_NULLS ON
 GO
 
--- --------------------------------------------------
--- Dropping existing tables
--- --------------------------------------------------
-
-IF OBJECT_ID(N'[dbo].[UserPostComments]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UserPostComments];
-GO
-IF OBJECT_ID(N'[dbo].[UserPostLikes]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UserPostLikes];
-GO
-IF OBJECT_ID(N'[dbo].[UserPosts]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UserPosts];
-GO
-IF OBJECT_ID(N'[dbo].[Users]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Users];
+SET QUOTED_IDENTIFIER ON
 GO
 
--- --------------------------------------------------
--- Creating all tables
--- --------------------------------------------------
-
--- Creating table 'UserPostComments'
-CREATE TABLE [dbo].[UserPostComments] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Comment] varchar(max)  NOT NULL,
-    [CommentDate] datetime  NULL,
-    [User_Id] int  NOT NULL,
-    [UserPost_Id] int  NOT NULL
-);
+SET ANSI_PADDING ON
 GO
 
--- Creating table 'UserPostLikes'
-CREATE TABLE [dbo].[UserPostLikes] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [User_Id] int  NOT NULL,
-    [UserPost_Id] int  NOT NULL
-);
+CREATE TABLE [dbo].[Users](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](50) NOT NULL,
+	[LastName] [varchar](50) NOT NULL,
+	[Email] [varchar](100) NOT NULL,
+	[Password] [varchar](12) NOT NULL,
+	[About] [text] NOT NULL,
+ CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
 GO
 
--- Creating table 'UserPosts'
-CREATE TABLE [dbo].[UserPosts] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [PostContent] varchar(max)  NOT NULL,
-    [ContentType] int  NOT NULL,
-    [PostDate] datetime  NULL,
-    [User_Id] int  NOT NULL
-);
+SET ANSI_PADDING OFF
 GO
 
--- Creating table 'Users'
-CREATE TABLE [dbo].[Users] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Name] varchar(50)  NOT NULL,
-    [LastName] varchar(50)  NOT NULL,
-    [Email] varchar(100)  NOT NULL,
-    [Password] varchar(12)  NOT NULL
-);
+/****** Object:  Table [dbo].[UserPosts]    Script Date: 16/01/2015 22:49:37 ******/
+SET ANSI_NULLS ON
 GO
 
--- --------------------------------------------------
--- Creating all PRIMARY KEY constraints
--- --------------------------------------------------
-
--- Creating primary key on [Id] in table 'UserPostComments'
-ALTER TABLE [dbo].[UserPostComments]
-ADD CONSTRAINT [PK_UserPostComments]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
+SET QUOTED_IDENTIFIER ON
 GO
 
--- Creating primary key on [Id] in table 'UserPostLikes'
-ALTER TABLE [dbo].[UserPostLikes]
-ADD CONSTRAINT [PK_UserPostLikes]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
+SET ANSI_PADDING ON
 GO
 
--- Creating primary key on [Id] in table 'UserPosts'
-ALTER TABLE [dbo].[UserPosts]
-ADD CONSTRAINT [PK_UserPosts]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
+CREATE TABLE [dbo].[UserPosts](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[PostContent] [varchar](max) NOT NULL,
+	[PostDate] [datetime] NOT NULL,
+	[User_Id] [int] NOT NULL,
+ CONSTRAINT [PK_UserPosts] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
 GO
 
--- Creating primary key on [Id] in table 'Users'
-ALTER TABLE [dbo].[Users]
-ADD CONSTRAINT [PK_Users]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
+SET ANSI_PADDING OFF
 GO
 
--- --------------------------------------------------
--- Creating all FOREIGN KEY constraints
--- --------------------------------------------------
-
--- Creating foreign key on [User_Id] in table 'UserPostComments'
-ALTER TABLE [dbo].[UserPostComments]
-ADD CONSTRAINT [FK_UserPostComments_User]
-    FOREIGN KEY ([User_Id])
-    REFERENCES [dbo].[Users]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE [dbo].[UserPosts]  WITH CHECK ADD  CONSTRAINT [FK_UserPosts_User] FOREIGN KEY([User_Id])
+REFERENCES [dbo].[Users] ([Id])
+ON DELETE CASCADE
 GO
 
--- Creating non-clustered index for FOREIGN KEY 'FK_UserPostComments_User'
-CREATE INDEX [IX_FK_UserPostComments_User]
-ON [dbo].[UserPostComments]
-    ([User_Id]);
+ALTER TABLE [dbo].[UserPosts] CHECK CONSTRAINT [FK_UserPosts_User]
 GO
 
--- Creating foreign key on [UserPost_Id] in table 'UserPostComments'
-ALTER TABLE [dbo].[UserPostComments]
-ADD CONSTRAINT [FK_UserPostComments_UserPosts]
-    FOREIGN KEY ([UserPost_Id])
-    REFERENCES [dbo].[UserPosts]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+/****** Object:  Table [dbo].[UserPostLikes]    Script Date: 16/01/2015 22:49:57 ******/
+SET ANSI_NULLS ON
 GO
 
--- Creating non-clustered index for FOREIGN KEY 'FK_UserPostComments_UserPosts'
-CREATE INDEX [IX_FK_UserPostComments_UserPosts]
-ON [dbo].[UserPostComments]
-    ([UserPost_Id]);
+SET QUOTED_IDENTIFIER ON
 GO
 
--- Creating foreign key on [User_Id] in table 'UserPostLikes'
-ALTER TABLE [dbo].[UserPostLikes]
-ADD CONSTRAINT [FK_UserPostLikes_User]
-    FOREIGN KEY ([User_Id])
-    REFERENCES [dbo].[Users]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+CREATE TABLE [dbo].[UserPostLikes](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[User_Id] [int] NOT NULL,
+	[UserPost_Id] [int] NOT NULL,
+ CONSTRAINT [PK_UserPostLikes] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
 GO
 
--- Creating non-clustered index for FOREIGN KEY 'FK_UserPostLikes_User'
-CREATE INDEX [IX_FK_UserPostLikes_User]
-ON [dbo].[UserPostLikes]
-    ([User_Id]);
+ALTER TABLE [dbo].[UserPostLikes]  WITH CHECK ADD  CONSTRAINT [FK_UserPostLikes_User] FOREIGN KEY([User_Id])
+REFERENCES [dbo].[Users] ([Id])
 GO
 
--- Creating foreign key on [UserPost_Id] in table 'UserPostLikes'
-ALTER TABLE [dbo].[UserPostLikes]
-ADD CONSTRAINT [FK_UserPostLikes_UserPosts]
-    FOREIGN KEY ([UserPost_Id])
-    REFERENCES [dbo].[UserPosts]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE [dbo].[UserPostLikes] CHECK CONSTRAINT [FK_UserPostLikes_User]
 GO
 
--- Creating non-clustered index for FOREIGN KEY 'FK_UserPostLikes_UserPosts'
-CREATE INDEX [IX_FK_UserPostLikes_UserPosts]
-ON [dbo].[UserPostLikes]
-    ([UserPost_Id]);
+ALTER TABLE [dbo].[UserPostLikes]  WITH CHECK ADD  CONSTRAINT [FK_UserPostLikes_UserPosts] FOREIGN KEY([UserPost_Id])
+REFERENCES [dbo].[UserPosts] ([Id])
 GO
 
--- Creating foreign key on [User_Id] in table 'UserPosts'
-ALTER TABLE [dbo].[UserPosts]
-ADD CONSTRAINT [FK_UserPosts_User]
-    FOREIGN KEY ([User_Id])
-    REFERENCES [dbo].[Users]
-        ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE [dbo].[UserPostLikes] CHECK CONSTRAINT [FK_UserPostLikes_UserPosts]
 GO
 
--- Creating non-clustered index for FOREIGN KEY 'FK_UserPosts_User'
-CREATE INDEX [IX_FK_UserPosts_User]
-ON [dbo].[UserPosts]
-    ([User_Id]);
+/****** Object:  Table [dbo].[UserPostFiles]    Script Date: 16/01/2015 22:50:14 ******/
+SET ANSI_NULLS ON
 GO
 
--- --------------------------------------------------
--- Script has ended
--- --------------------------------------------------
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[UserPostFiles](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[UserPostId] [int] NOT NULL,
+	[FileName] [varchar](1000) NOT NULL,
+	[Type] [varchar](20) NOT NULL,
+ CONSTRAINT [PK_UserPostFiles] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[UserPostFiles]  WITH CHECK ADD  CONSTRAINT [FK_UserPostFiles_UserPosts] FOREIGN KEY([UserPostId])
+REFERENCES [dbo].[UserPosts] ([Id])
+GO
+
+ALTER TABLE [dbo].[UserPostFiles] CHECK CONSTRAINT [FK_UserPostFiles_UserPosts]
+GO
+
+/****** Object:  Table [dbo].[UserPostComments]    Script Date: 16/01/2015 22:50:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[UserPostComments](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Comment] [varchar](max) NOT NULL,
+	[CommentDate] [datetime] NULL,
+	[User_Id] [int] NOT NULL,
+	[UserPost_Id] [int] NOT NULL,
+ CONSTRAINT [PK_UserPostComments] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[UserPostComments]  WITH CHECK ADD  CONSTRAINT [FK_UserPostComments_User] FOREIGN KEY([User_Id])
+REFERENCES [dbo].[Users] ([Id])
+GO
+
+ALTER TABLE [dbo].[UserPostComments] CHECK CONSTRAINT [FK_UserPostComments_User]
+GO
+
+ALTER TABLE [dbo].[UserPostComments]  WITH CHECK ADD  CONSTRAINT [FK_UserPostComments_UserPosts] FOREIGN KEY([UserPost_Id])
+REFERENCES [dbo].[UserPosts] ([Id])
+GO
+
+ALTER TABLE [dbo].[UserPostComments] CHECK CONSTRAINT [FK_UserPostComments_UserPosts]
+GO
+
+/****** Object:  Table [dbo].[UserPostCommentLikes]    Script Date: 16/01/2015 22:50:40 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[UserPostCommentLikes](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[User_Id] [int] NOT NULL,
+	[UserPostComment_Id] [int] NOT NULL,
+ CONSTRAINT [PK_UserPostCommentLikes] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[UserPostCommentLikes]  WITH CHECK ADD  CONSTRAINT [FK_UserPostCommentLikes_User] FOREIGN KEY([User_Id])
+REFERENCES [dbo].[Users] ([Id])
+GO
+
+ALTER TABLE [dbo].[UserPostCommentLikes] CHECK CONSTRAINT [FK_UserPostCommentLikes_User]
+GO
+
+ALTER TABLE [dbo].[UserPostCommentLikes]  WITH CHECK ADD  CONSTRAINT [FK_UserPostCommentLikes_UserPostComments] FOREIGN KEY([UserPostComment_Id])
+REFERENCES [dbo].[UserPostComments] ([Id])
+GO
+
+ALTER TABLE [dbo].[UserPostCommentLikes] CHECK CONSTRAINT [FK_UserPostCommentLikes_UserPostComments]
+GO
+
