@@ -58,6 +58,7 @@
     self.userLastNameSignup = new LoginEntity();
     self.userEmailSignup = new LoginEntity();
     self.userPassordSignup = new LoginEntity();
+    self.userAboutSignup = new LoginEntity();
     self.signupHasErrors = ko.observable(false);
     self.signupErrorMessage = ko.observable('');
     self.signup = function () {
@@ -66,13 +67,15 @@
             userName = self.userNameSignup,
             userLastName = self.userLastNameSignup,
             userEmail = self.userEmailSignup,
-            userPassword = self.userPassordSignup
+            userPassword = self.userPassordSignup,
+            userAbout = self.userAboutSignup
         ;
 
         userName.hasErrors(false);
         userLastName.hasErrors(false);
         userEmail.hasErrors(false);
         userPassword.hasErrors(false);
+        userAbout.hasErrors(false);
 
         if (userName.value().trim().length === 0) {
             userName.errorMessage('Invalid name.');
@@ -94,7 +97,12 @@
             userPassword.hasErrors(true);
         }
 
-        if (userName.hasErrors() || userLastName.hasErrors() || userEmail.hasErrors() || userPassword.hasErrors()) {
+        if (userAbout.value().length === 0) {
+            userAbout.errorMessage('Tell us more about you.');
+            userAbout.hasErrors(true);
+        }
+
+        if (userName.hasErrors() || userLastName.hasErrors() || userEmail.hasErrors() || userPassword.hasErrors() || userAbout.hasErrors()) {
             return;
         }
 
@@ -110,7 +118,7 @@
                 LastName: userLastName.value(),
                 Email: userEmail.value(),
                 Password: userPassword.value(),
-                About: ''
+                About: userAbout.value()
             }),
             success: function (obj, status, jqXHR) {
                 self.signupHasErrors(false);

@@ -74,6 +74,10 @@
                             <span class="help-block with-errors"></span>
                         </div>
                         <div class="form-group">
+                            <textarea class="form-control" placeholder="Tell us a little bit about you..." rows="3" data-bind="value: userAboutSignup.value" required></textarea>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-group">
                             <div class="alert alert-danger well-sm pull-left" role="alert" data-bind="visible: signupHasErrors">
                                 <span data-bind="text: signupErrorMessage"></span>
                             </div>
