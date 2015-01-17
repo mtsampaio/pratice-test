@@ -6,6 +6,10 @@ using System.Web.Mvc;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System.IO;
+using CrystalDecisions.CrystalReports.Engine;
+using Chi.SocialNetwork.Reports;
+using System.Data;
+using Chi.SocialNetwork.Models;
 
 namespace Chi.SocialNetwork.Controllers
 {
@@ -62,13 +66,51 @@ namespace Chi.SocialNetwork.Controllers
                 var path = Path.Combine(dir, file.FileName);
                 return base.File(path, "image/jpeg");
             }
-                return base.File("", file.Type);
+            return base.File("", file.Type);
         }
 
-        protected override void Dispose(bool disposing)
+        [AllowAnonymous]
+        public ActionResult Report()
         {
-            this.rep.Dispose();
-            base.Dispose(disposing);
+            var user = CurrentUserHelper.GetCurrentUser(this.User.Identity as ClaimsIdentity);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            var userInfo = new
+            {
+                PostsCount = this.rep.GetUserPosts(user.Id).Count(),
+                FriendsCount = this.rep.GetUsers().Count(),
+                LikesCount = this.rep.GetUserPosts(user.Id).ToList().Sum(p => this.rep.GetUserPostLikes(p.Id).ToList().Count()),
+                PicturesCount = 0,
+                VideosCount = 0,
+            };
+
+            var ds = new ReportDataSet();
+
+            var userRow = ds.User.AddUserRow(user.Id, user.Name + " " + user.LastName, null, userInfo.LikesCount, userInfo.PostsCount, userInfo.PicturesCount,
+                userInfo.VideosCount, userInfo.FriendsCount, (userInfo.FriendsCount - userInfo.LikesCount));
+
+            foreach (var post in this.rep.GetUserPosts(user.Id))
+            {
+                var postRow = ds.Post.AddPostRow(userRow, post.PostContent, this.rep.GetUserPostLikes(post.Id).Count(), post.Id, post.PostDate);
+
+                foreach (var comment in post.UserPostComments)
+                {
+                    ds.Comment.AddCommentRow(postRow, comment.Id, comment.Comment, comment.UserPostCommentLikes.Count, comment.User.Name + " " + comment.User.LastName, null);
+                }
+            }
+
+            var rpt = new ReportClass();
+            rpt.FileName = Server.MapPath("~/Reports/HobbiesReport.rpt");
+            rpt.Load();
+            rpt.SetDataSource(ds);
+
+            var stream = rpt.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+
+            return File(stream, "application/pdf");
         }
     }
 }

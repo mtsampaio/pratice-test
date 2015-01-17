@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ReportDataSet" targetNamespace="http://tempuri.org/ReportDataSet.xsd" xmlns:mstns="http://tempuri.org/ReportDataSet.xsd" xmlns="http://tempuri.org/ReportDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="ReportDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="ReportDataSet" msprop:Generator_UserDSName="ReportDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="User" msprop:Generator_TableClassName="UserDataTable" msprop:Generator_TableVarName="tableUser" msprop:Generator_TablePropName="User" msprop:Generator_RowDeletingName="UserRowDeleting" msprop:Generator_RowChangingName="UserRowChanging" msprop:Generator_RowEvHandlerName="UserRowChangeEventHandler" msprop:Generator_RowDeletedName="UserRowDeleted" msprop:Generator_UserTableName="User" msprop:Generator_RowChangedName="UserRowChanged" msprop:Generator_RowEvArgName="UserRowChangeEvent" msprop:Generator_RowClassName="UserRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:int" />
+              <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="ProfilePicture" msprop:Generator_ColumnVarNameInTable="columnProfilePicture" msprop:Generator_ColumnPropNameInRow="ProfilePicture" msprop:Generator_ColumnPropNameInTable="ProfilePictureColumn" msprop:Generator_UserColumnName="ProfilePicture" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="LikesCount" msprop:Generator_ColumnVarNameInTable="columnLikesCount" msprop:Generator_ColumnPropNameInRow="LikesCount" msprop:Generator_ColumnPropNameInTable="LikesCountColumn" msprop:Generator_UserColumnName="LikesCount" type="xs:int" minOccurs="0" />
+              <xs:element name="PostCount" msprop:Generator_ColumnVarNameInTable="columnPostCount" msprop:Generator_ColumnPropNameInRow="PostCount" msprop:Generator_ColumnPropNameInTable="PostCountColumn" msprop:Generator_UserColumnName="PostCount" type="xs:int" minOccurs="0" />
+              <xs:element name="PicturesCount" msprop:Generator_ColumnVarNameInTable="columnPicturesCount" msprop:Generator_ColumnPropNameInRow="PicturesCount" msprop:Generator_ColumnPropNameInTable="PicturesCountColumn" msprop:Generator_UserColumnName="PicturesCount" type="xs:int" minOccurs="0" />
+              <xs:element name="VideosCount" msprop:Generator_ColumnVarNameInTable="columnVideosCount" msprop:Generator_ColumnPropNameInRow="VideosCount" msprop:Generator_ColumnPropNameInTable="VideosCountColumn" msprop:Generator_UserColumnName="VideosCount" type="xs:int" minOccurs="0" />
+              <xs:element name="FriendsCount" msprop:Generator_ColumnVarNameInTable="columnFriendsCount" msprop:Generator_ColumnPropNameInRow="FriendsCount" msprop:Generator_ColumnPropNameInTable="FriendsCountColumn" msprop:Generator_UserColumnName="FriendsCount" type="xs:int" minOccurs="0" />
+              <xs:element name="UnlikesCount" msprop:Generator_ColumnVarNameInTable="columnUnlikesCount" msprop:Generator_ColumnPropNameInRow="UnlikesCount" msprop:Generator_ColumnPropNameInTable="UnlikesCountColumn" msprop:Generator_UserColumnName="UnlikesCount" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Post" msprop:Generator_TableClassName="PostDataTable" msprop:Generator_TableVarName="tablePost" msprop:Generator_TablePropName="Post" msprop:Generator_RowDeletingName="PostRowDeleting" msprop:Generator_RowChangingName="PostRowChanging" msprop:Generator_RowEvHandlerName="PostRowChangeEventHandler" msprop:Generator_RowDeletedName="PostRowDeleted" msprop:Generator_UserTableName="Post" msprop:Generator_RowChangedName="PostRowChanged" msprop:Generator_RowEvArgName="PostRowChangeEvent" msprop:Generator_RowClassName="PostRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="UserId" msprop:Generator_ColumnVarNameInTable="columnUserId" msprop:Generator_ColumnPropNameInRow="UserId" msprop:Generator_ColumnPropNameInTable="UserIdColumn" msprop:Generator_UserColumnName="UserId" type="xs:int" minOccurs="0" />
+              <xs:element name="Content" msprop:Generator_ColumnVarNameInTable="columnContent" msprop:Generator_ColumnPropNameInRow="Content" msprop:Generator_ColumnPropNameInTable="ContentColumn" msprop:Generator_UserColumnName="Content" type="xs:string" minOccurs="0" />
+              <xs:element name="LikeCount" msprop:Generator_ColumnVarNameInTable="columnLikeCount" msprop:Generator_ColumnPropNameInRow="LikeCount" msprop:Generator_ColumnPropNameInTable="LikeCountColumn" msprop:Generator_UserColumnName="LikeCount" type="xs:int" minOccurs="0" />
+              <xs:element name="Id" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:int" />
+              <xs:element name="Date" msprop:Generator_ColumnVarNameInTable="columnDate" msprop:Generator_ColumnPropNameInRow="Date" msprop:Generator_ColumnPropNameInTable="DateColumn" msprop:Generator_UserColumnName="Date" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Comment" msprop:Generator_TableClassName="CommentDataTable" msprop:Generator_TableVarName="tableComment" msprop:Generator_TablePropName="Comment" msprop:Generator_RowDeletingName="CommentRowDeleting" msprop:Generator_RowChangingName="CommentRowChanging" msprop:Generator_RowEvHandlerName="CommentRowChangeEventHandler" msprop:Generator_RowDeletedName="CommentRowDeleted" msprop:Generator_UserTableName="Comment" msprop:Generator_RowChangedName="CommentRowChanged" msprop:Generator_RowEvArgName="CommentRowChangeEvent" msprop:Generator_RowClassName="CommentRow" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <msdata:Relationship name="Post_Comment" msdata:parent="Post" msdata:child="Comment" msdata:parentkey="Id" msdata:childkey="PostId" msprop:Generator_UserChildTable="Comment" msprop:Generator_ChildPropName="GetCommentRows" msprop:Generator_UserRelationName="Post_Comment" msprop:Generator_ParentPropName="PostRow" msprop:Generator_RelationVarName="relationPost_Comment" msprop:Generator_UserParentTable="Post" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="PostId" msprop:Generator_ColumnVarNameInTable="columnPostId" msprop:Generator_ColumnPropNameInRow="PostId" msprop:Generator_ColumnPropNameInTable="PostIdColumn" msprop:Generator_UserColumnName="PostId" type="xs:int" minOccurs="0" />
+                    <xs:element name="Id" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:int" />
+                    <xs:element name="Content" msprop:Generator_ColumnVarNameInTable="columnContent" msprop:Generator_ColumnPropNameInRow="Content" msprop:Generator_ColumnPropNameInTable="ContentColumn" msprop:Generator_UserColumnName="Content" type="xs:string" minOccurs="0" />
+                    <xs:element name="LikeCount" msprop:Generator_ColumnVarNameInTable="columnLikeCount" msprop:Generator_ColumnPropNameInRow="LikeCount" msprop:Generator_ColumnPropNameInTable="LikeCountColumn" msprop:Generator_UserColumnName="LikeCount" type="xs:int" minOccurs="0" />
+                    <xs:element name="UserName" msprop:Generator_ColumnVarNameInTable="columnUserName" msprop:Generator_ColumnPropNameInRow="UserName" msprop:Generator_ColumnPropNameInTable="UserNameColumn" msprop:Generator_UserColumnName="UserName" type="xs:string" minOccurs="0" />
+                    <xs:element name="UserProfilePicture" msprop:Generator_ColumnVarNameInTable="columnUserProfilePicture" msprop:Generator_ColumnPropNameInRow="UserProfilePicture" msprop:Generator_ColumnPropNameInTable="UserProfilePictureColumn" msprop:Generator_UserColumnName="UserProfilePicture" type="xs:base64Binary" minOccurs="0" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:User" />
+      <xs:field xpath="mstns:Id" />
+    </xs:unique>
+    <xs:unique name="Comment_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:Comment" />
+      <xs:field xpath="mstns:Id" />
+    </xs:unique>
+    <xs:unique name="Post_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:Post" />
+      <xs:field xpath="mstns:Id" />
+    </xs:unique>
+  </xs:element>
+  <xs:annotation>
+    <xs:appinfo>
+      <msdata:Relationship name="User_Post" msdata:parent="User" msdata:child="Post" msdata:parentkey="Id" msdata:childkey="UserId" msprop:Generator_UserChildTable="Post" msprop:Generator_ChildPropName="GetPostRows" msprop:Generator_UserRelationName="User_Post" msprop:Generator_ParentPropName="UserRow" msprop:Generator_RelationVarName="relationUser_Post" msprop:Generator_UserParentTable="User" />
+    </xs:appinfo>
+  </xs:annotation>
+</xs:schema>

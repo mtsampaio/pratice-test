@@ -4,7 +4,8 @@
         userPostUri = '/api/UserPosts',
         userCommentUri = '/api/UserPostComment',
 
-        dropzone
+        dropzone,
+        uploadFileError = ''
     ;
 
     if ($('#form-comment').length) {
@@ -23,10 +24,12 @@
                 Authorization: "Bearer " + localStorage.getItem("user")
             },
             error: function (e, text, xhr) {
-                if (xhr) {
-                    text = xhr.responseText;
-                }
+                uploadFileError = text;
             }
+        });
+
+        dropzone.on('removedfile', function () {
+            uploadFileError = '';
         });
     }
 
@@ -60,13 +63,17 @@
            self = this
         ;
 
+        if (uploadFileError.length) {
+            alert(uploadFileError);
+            return;
+        }
+
         self.busy(true);
 
         ajaxHelper(userPostUri, {
             data: JSON.stringify({
                 Id: 0,
-                PostContent: self.hobbie(),
-                ContentType: 1
+                PostContent: self.hobbie()
             }),
             success: function (obj) {
                 var
@@ -104,6 +111,9 @@
                                     file.type = obj.Type;
 
                                     files.push(file);
+                                },
+                                error: function () {
+                                    alert('Error!');
                                 },
                                 complete: function () {
                                     count++;
